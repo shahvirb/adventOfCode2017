@@ -1,5 +1,5 @@
 MAX = 361527
-#MAX = 13
+#MAX = 54
 
 def gen_spiral_commands(max=100):
     edge_len = 1
@@ -31,7 +31,7 @@ class PositionMarker():
         self.y += dy
 
 
-if __name__ == '__main__':
+def do_first_part():
     p = PositionMarker()
     i = 1
     for cmd in gen_spiral_commands(1000000000):
@@ -42,4 +42,29 @@ if __name__ == '__main__':
             print(cmd, p.x, p.y, i)
             print('Answer = {}'.format(abs(p.x) + abs(p.y)))
             break
-    
+
+
+def write_cell(posn, data):
+    data[posn] = 0
+    ADJACENCY = ((0, 1), (0, -1), (1, 0), (1, 1), (1, -1), (-1, 0), (-1, 1), (-1, -1))
+    for ox, oy in ADJACENCY:
+        val = data.get((posn[0]+ox, posn[1]+oy), 0)
+        data[posn] += val
+    return data[posn]
+
+def do_second_part():
+    p = PositionMarker()
+    data = {(0,0): 1}
+    for cmd in gen_spiral_commands(1000000000):
+        p.move(cmd)
+        current = write_cell((p.x, p.y), data)
+        
+        if current > MAX:
+            print(cmd, p.x, p.y, current)
+            print(data)
+            print('Answer = {}'.format(abs(p.x) + abs(p.y)))
+            break
+
+if __name__ == '__main__':
+    #do_first_part()
+    do_second_part()
