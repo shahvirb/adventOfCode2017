@@ -40,6 +40,7 @@ def exec(how, amount):
 
 if __name__ == '__main__':
     registers = {}
+    highest = 0
     for line in read_input():
         inst = parse_line(line)
         #print(inst)
@@ -47,5 +48,7 @@ if __name__ == '__main__':
         if eval(x, inst.cond, inst.rop):
             registers.setdefault(inst.modify, 0)
             registers[inst.modify] += exec(inst.how, inst.amount)
+        highest = max(max(registers.values()), highest)
         #print(registers)
     print(max(registers.values()))
+    print(highest)
